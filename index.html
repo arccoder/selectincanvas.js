@@ -9,21 +9,24 @@
 <body>
 <h1>selectInCanvas</h1>
 To draw a rectangle, left click on the canvas and drag. Leave the left click to complete drawing the rectangle.
+
 You can use the squares on the rectangle to resize.
+
 Left click any where in the rectangle to hold the rectangle and move around in the canvas, leave the left click to drop the rectangle to the desired location.
+
 You can use the 'del' or 'esc' key to delete the rectangle.
+
 Double click on the rectangle to display the its coordinates in an alert.
+
 <br>
 <br>
 
 <canvas id="canvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
 
 <script>
-
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var sjs = new selectInCanvas('canvas',canvas,ctx,'#0000FF');
-
 </script>
 
 </body>
