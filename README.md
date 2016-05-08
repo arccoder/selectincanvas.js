@@ -1,7 +1,7 @@
 # selectInCanvas
 Enables a drag able rectangle on a canvas.
 
-MIT License
+**MIT License**
 
 Copyright (c) 2016 Akshay Chavan
 
