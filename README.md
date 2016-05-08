@@ -4,6 +4,7 @@ Enables a drag able rectangle on a canvas.
 [DEMO](https://cdn.rawgit.com/arccoder/selectincanvasjs/master/index.html)
 
 **Applications**
+- Select a roi (region of interest).
 - Crop an image.
 
 **MIT License**
