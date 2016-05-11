@@ -1,4 +1,4 @@
-# selectInCanvas
+# selectInCanvas.js
 Enables a drag able rectangle on a canvas.
 
 [DEMO](https://cdn.rawgit.com/arccoder/selectincanvasjs/master/index.html)
