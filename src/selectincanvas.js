@@ -20,25 +20,63 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-(function() {
-    // Constructor
-    selectInCanvas = function(canvasid,canvas,ctxd,rectColor) {
-		
+var SICjs = (function SICjs() {
+	
+	// Position of the canvas
+	var cPos = {};
+	// To store rectangle
+	var rect = {};	
+	// Initialize rect width and height to zero
+	rect.w = 0;
+	rect.h = 0;	
+	// Rect color
+	var rectcolor = '#FF0000';
+	// To store rectangle anchor point
+	// Used only while dragging the whole rectangle
+	var anchor = {};
+	// Selection marker size
+	var sBlk = 4;
+
+	// FLAGS
+	// Rect already present
+	var active = false;
+	// Drag for rect resize in progress
+	var drag = false;
+	// Marker flags by positions
+	var TL = false;
+	var TM = false;
+	var TR = false;
+	var LM = false;
+	var RM = false;
+	var BL = false;
+	var BM = false;
+	var BR = false;
+	var hold = false;
+
+    // Return the constructor
+    return function constructor(canvasid,canvas,ctxd,rColor) {
+						
 		// Check the arguments
 		if( typeof canvasid != 'string' ) { return; }
 		if( !canvas ) { return; }
-        if( !ctxd ) { return; }
-		if( typeof rectColor != 'string' ) { return; }
+		if( !ctxd ) { return; }
+		if( typeof rColor != 'string' ) { return; }
+
+		// Get the position of the canvas
+		cPos = canvas.getBoundingClientRect();
+
+		// Rect color
+		rectcolor = rColor;
 		
 		// Listeners
 		$(canvasid).mousedown(function(e) {
 			mouseDown(e);
 		});
-
+        
 		$(canvasid).mouseup(function(e) {
 			mouseUp(e);	
 		});
-
+        
 		$(canvasid).mousemove(function(e) {
 			mouseMove(e);
 		});
@@ -46,43 +84,17 @@
 		$(document).on('keyup',function(e) {
 			keyUp(e);
 		});
-		
-		$(canvasid).dblclick(function(e){
-			dblClick(e);
-		});
-		
-		// Variables
-		
-		// Position of the canvas
-		cPos = canvas.getBoundingClientRect();
-		
-		// To store rectangle
-		rect = {};
-	
-		// To store rectangle anchor point
-		// Used only while dragging the whole rectangle
-		anchor = {};
-		
-		// Selection marker size
-		sBlk = 4;
-		
-		// Rect color
-		rect.color = rectColor;
-		
-		// FLAGS
-		// Rect already present
-		active = false;
-		// Drag for rect resize in progress
-		drag = false;
-		
-		// Marker flags by positions
-		TL = TM = TR = false;
-		LM = RM = false;
-		BL = BM = BR = false;
-		hold = false;
-    };
 
-    // Private methods	
+		// Public method to return rect
+		// position -> top-left  and 
+		// size -> width and height
+		// [left, top, width, height]
+        this.getRect = function () {
+            return rect;
+        };
+    };
+	
+	// Private methods	
 	function mouseDown(e) {
 		eX = e.pageX - cPos.left;
 		eY = e.pageY - cPos.top;
@@ -151,7 +163,7 @@
 			return;
 		}
 	}
-
+	
 	function mouseMove(e) {
 		eX = e.pageX - cPos.left;
 		eY = e.pageY - cPos.top;
@@ -233,6 +245,8 @@
 		drag = false;
 		disableResizeButtons();
 		straightenUpRect();
+		if( rect.w == 0 || rect.h == 0 )
+			active = false;
 		keepRectInCanvas();		
 	}
 	
@@ -242,13 +256,6 @@
 			active = false;
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 		}
-	}
-	
-	function dblClick(e){
-		eX = e.pageX - cPos.left;
-		eY = e.pageY - cPos.top;
-		if( pointInRect(eX,eY,rect.x,rect.y,rect.w,rect.h) )
-			alert(rect.x + ',' + rect.y + ',' + rect.w + ',' + rect.h);
 	}
 
 	function disableResizeButtons(){
@@ -271,7 +278,7 @@
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		
 		// Draw
-		ctx.strokeStyle = rect.color;
+		ctx.strokeStyle = rectcolor;
 		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
 		drawSelectMarkers(rect.x, rect.y, rect.w, rect.h);
 	}
@@ -318,8 +325,8 @@
 		}
 	}
 	
-	function printRect() {
-		console.log(rect.x + ',' + rect.y + ',' + rect.w + ',' + rect.h);
-	}
-
-})();
+	//function printRect() {
+	//	console.log(rect.x + ',' + rect.y + ',' + rect.w + ',' + rect.h);
+	//}
+	
+}());
