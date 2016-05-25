@@ -22,6 +22,15 @@
 
 var SICjs = (function SICjs() {
 	
+	// Canvas Id
+	var canvasId = "";
+	// Canvas Object
+	var canvasObj = null;
+	// ctxd Object
+	var ctxdObj = null;
+	// Rect color
+	var rectcolor = '#FF0000';
+	
 	// Position of the canvas
 	var cPos = {};
 	// To store rectangle
@@ -29,8 +38,6 @@ var SICjs = (function SICjs() {
 	// Initialize rect width and height to zero
 	rect.w = 0;
 	rect.h = 0;	
-	// Rect color
-	var rectcolor = '#FF0000';
 	// To store rectangle anchor point
 	// Used only while dragging the whole rectangle
 	var anchor = {};
@@ -54,30 +61,41 @@ var SICjs = (function SICjs() {
 	var hold = false;
 
     // Return the constructor
-    return function constructor(canvasid,canvas,ctxd,rColor) {
-						
+    return function constructor(canvasidIn,canvasObjIn,ctxdIn,rColorIn) {
+		
+		// Set canvasId variable
+		canvasId = "#"+canvasidIn;
+		// Set canvasObj variable
+		canvasObj = canvasObjIn;
+		// Set ctxdObj variable
+		ctxdObj = ctxdIn;
+		// Rect color
+		rectcolor = rColorIn;
+		
+		console.log(canvasId);
+		console.log(canvasObj);
+		console.log(ctxdObj);
+		console.log(rectcolor);
+		
 		// Check the arguments
-		if( typeof canvasid != 'string' ) { return; }
-		if( !canvas ) { return; }
-		if( !ctxd ) { return; }
-		if( typeof rColor != 'string' ) { return; }
+		if( typeof canvasId != 'string' ) { return; }
+		if( !canvasObj ) { return; }
+		if( !ctxdObj ) { return; }
+		if( typeof rectcolor != 'string' ) { return; }
 
 		// Get the position of the canvas
-		cPos = canvas.getBoundingClientRect();
+		cPos = canvasObj.getBoundingClientRect();
 
-		// Rect color
-		rectcolor = rColor;
-		
 		// Listeners
-		$(canvasid).mousedown(function(e) {
+		$(canvasId).mousedown(function(e) {
 			mouseDown(e);
 		});
         
-		$(canvasid).mouseup(function(e) {
+		$(canvasId).mouseup(function(e) {
 			mouseUp(e);	
 		});
         
-		$(canvasid).mousemove(function(e) {
+		$(canvasId).mousemove(function(e) {
 			mouseMove(e);
 		});
 		
@@ -254,7 +272,7 @@ var SICjs = (function SICjs() {
 		// esc or del
 		if (e.keyCode == 27 || e.keyCode == 46 ) {
 			active = false;
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.clearRect(0, 0, canvasObj.width, canvasObj.height);
 		}
 	}
 
@@ -275,7 +293,7 @@ var SICjs = (function SICjs() {
 	
 	function clearCanvasNDraw() {
 		// Clear canvas
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, canvasObj.width, canvasObj.height);
 		
 		// Draw
 		ctx.strokeStyle = rectcolor;
@@ -308,10 +326,10 @@ var SICjs = (function SICjs() {
 			rect.x = 0;
 		if( rect.y < 0 )
 			rect.y = 0;
-		if( (rect.x+rect.w) > canvas.width )
-			rect.x = canvas.width - rect.w;
-		if( (rect.y+rect.h) > canvas.height )
-			rect.y = canvas.height - rect.h;
+		if( (rect.x+rect.w) > canvasObj.width )
+			rect.x = canvasObj.width - rect.w;
+		if( (rect.y+rect.h) > canvasObj.height )
+			rect.y = canvasObj.height - rect.h;
 	}
 	
 	function straightenUpRect(){
