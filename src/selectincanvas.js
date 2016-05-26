@@ -72,11 +72,6 @@ var SICjs = (function SICjs() {
 		// Rect color
 		rectcolor = rColorIn;
 		
-		console.log(canvasId);
-		console.log(canvasObj);
-		console.log(ctxdObj);
-		console.log(rectcolor);
-		
 		// Check the arguments
 		if( typeof canvasId != 'string' ) { return; }
 		if( !canvasObj ) { return; }
@@ -293,32 +288,32 @@ var SICjs = (function SICjs() {
 	
 	function clearCanvasNDraw() {
 		// Clear canvas
-		ctx.clearRect(0, 0, canvasObj.width, canvasObj.height);
+		ctxdObj.clearRect(0, 0, canvasObj.width, canvasObj.height);
 		
 		// Draw
-		ctx.strokeStyle = rectcolor;
-		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+		ctxdObj.strokeStyle = rectcolor;
+		ctxdObj.strokeRect(rect.x, rect.y, rect.w, rect.h);
 		drawSelectMarkers(rect.x, rect.y, rect.w, rect.h);
 	}
 	
 	function drawSelectMarkers(x,y,w,h){
 		// Top-Left
-		ctx.strokeRect(x-sBlk,y-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x-sBlk,y-sBlk,sBlk*2,sBlk*2);
 		// Top-Rigth
-		ctx.strokeRect(x+w-sBlk,y-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x+w-sBlk,y-sBlk,sBlk*2,sBlk*2);
 		// Bottom-Left
-		ctx.strokeRect(x-sBlk,y+h-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x-sBlk,y+h-sBlk,sBlk*2,sBlk*2);
 		// Bottom-Right
-		ctx.strokeRect(x+w-sBlk,y+h-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x+w-sBlk,y+h-sBlk,sBlk*2,sBlk*2);
 		
 		// Top-Mid
-		ctx.strokeRect(x+w/2-sBlk,y-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x+w/2-sBlk,y-sBlk,sBlk*2,sBlk*2);
 		// Bottom-Mid
-		ctx.strokeRect(x+w/2-sBlk,y+h-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x+w/2-sBlk,y+h-sBlk,sBlk*2,sBlk*2);
 		// Left-Mid
-		ctx.strokeRect(x-sBlk,y+h/2-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x-sBlk,y+h/2-sBlk,sBlk*2,sBlk*2);
 		// Right-Mid
-		ctx.strokeRect(x+w-sBlk,y+h/2-sBlk,sBlk*2,sBlk*2);
+		ctxdObj.strokeRect(x+w-sBlk,y+h/2-sBlk,sBlk*2,sBlk*2);
 	}
 
 	function keepRectInCanvas() {
