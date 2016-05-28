@@ -31,6 +31,8 @@ var SICjs = (function SICjs() {
 	// Rect color
 	var rectcolor = '#FF0000';
 	
+	// Limits on the canvas
+	var keepWithin = {};
 	// Position of the canvas
 	var cPos = {};
 	// To store rectangle
@@ -71,6 +73,11 @@ var SICjs = (function SICjs() {
 		ctxdObj = ctxdIn;
 		// Rect color
 		rectcolor = rColorIn;
+		// Limit the slection box to the canvas
+		keepWithin.x = 0;
+		keepWithin.y = 0;
+		keepWithin.w = canvasObj.width;
+		keepWithin.h = canvasObj.height;
 		
 		// Check the arguments
 		if( typeof canvasId != 'string' ) { return; }
@@ -104,6 +111,35 @@ var SICjs = (function SICjs() {
 		// [left, top, width, height]
         this.getRect = function () {
             return rect;
+        };
+		
+		// Public method to set rect value
+		// position -> top-left  and 
+		// size -> width and height
+		// [left, top, width, height]
+		this.setRect = function (left,top,width,height) {
+			
+			// Set the rect values
+            rect.x = left;
+			rect.y = top;
+			rect.w = width;
+			rect.h = height;
+			active = true;
+								
+			// Draw rect on canvas
+			clearCanvasNDraw();
+        };
+		
+		// Public method to set limits in canvas
+		// position -> top-left  and 
+		// size -> width and height
+		// [left, top, width, height]
+		this.setLimits = function (left,top,width,height) {
+			
+			keepWithin.x = left;
+			keepWithin.y = top;
+			keepWithin.w = width;
+			keepWithin.h = height;
         };
     };
 	
@@ -184,7 +220,7 @@ var SICjs = (function SICjs() {
 		if( drag & active ) {
 			rect.w = eX - rect.x;
 			rect.h = eY - rect.y ;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 
@@ -193,8 +229,7 @@ var SICjs = (function SICjs() {
 			rect.x = eX-anchor.xLeft;
 			rect.y = eY-anchor.xTop;
 			straightenUpRect();
-			keepRectInCanvas();	
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 		
@@ -203,14 +238,14 @@ var SICjs = (function SICjs() {
 			rect.h = (rect.y + rect.h) - eY;
 			rect.x = eX;
 			rect.y = eY;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 	  
 		if( BR ) {
 			rect.w = eX - rect.x;
 			rect.h = eY - rect.y;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 	  
@@ -218,7 +253,7 @@ var SICjs = (function SICjs() {
 			rect.h = (rect.y + rect.h) - eY;
 			rect.y = eY;
 			rect.w = eX - rect.x;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 		
@@ -226,30 +261,30 @@ var SICjs = (function SICjs() {
 			rect.w = (rect.x + rect.w) - eX;
 			rect.x = eX;
 			rect.h = eY - rect.y;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 		
 		if( TM ) {
 			rect.h = (rect.y + rect.h) - eY;
 			rect.y = eY;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 		if( BM ) {
 			rect.h = eY - rect.y;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 		if( LM ) {
 			rect.w = (rect.x + rect.w) - eX;
 			rect.x = eX;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 		if( RM ) {
 			rect.w = eX - rect.x;
-			clearCanvasNDraw();
+			keepRectInCanvas();
 			return;
 		}
 	}
@@ -267,7 +302,7 @@ var SICjs = (function SICjs() {
 		// esc or del
 		if (e.keyCode == 27 || e.keyCode == 46 ) {
 			active = false;
-			ctx.clearRect(0, 0, canvasObj.width, canvasObj.height);
+			ctxdObj.clearRect(0, 0, canvasObj.width, canvasObj.height);
 		}
 	}
 
@@ -289,7 +324,7 @@ var SICjs = (function SICjs() {
 	function clearCanvasNDraw() {
 		// Clear canvas
 		ctxdObj.clearRect(0, 0, canvasObj.width, canvasObj.height);
-		
+
 		// Draw
 		ctxdObj.strokeStyle = rectcolor;
 		ctxdObj.strokeRect(rect.x, rect.y, rect.w, rect.h);
@@ -317,14 +352,23 @@ var SICjs = (function SICjs() {
 	}
 
 	function keepRectInCanvas() {
-		if( rect.x < 0 ) 
-			rect.x = 0;
-		if( rect.y < 0 )
-			rect.y = 0;
-		if( (rect.x+rect.w) > canvasObj.width )
-			rect.x = canvasObj.width - rect.w;
-		if( (rect.y+rect.h) > canvasObj.height )
-			rect.y = canvasObj.height - rect.h;
+		
+		if( rect.w >= keepWithin.w )
+			rect.w = keepWithin.w;
+		if( rect.h >= keepWithin.h )
+			rect.h = keepWithin.h;
+		
+		if( rect.x <= keepWithin.x ) 
+			rect.x = keepWithin.x;	
+		if( rect.y <= keepWithin.y )
+			rect.y = keepWithin.y;
+		
+		if( (rect.x+rect.w) >= (keepWithin.x+keepWithin.w) )
+			rect.x = (keepWithin.x+keepWithin.w) - rect.w;	
+		if( (rect.y+rect.h) >= (keepWithin.y+keepWithin.h) )
+			rect.y = (keepWithin.y+keepWithin.h) - rect.h;
+		
+		clearCanvasNDraw();
 	}
 	
 	function straightenUpRect(){
@@ -338,8 +382,9 @@ var SICjs = (function SICjs() {
 		}
 	}
 	
-	//function printRect() {
-	//	console.log(rect.x + ',' + rect.y + ',' + rect.w + ',' + rect.h);
-	//}
+	function printRect() {
+		console.log('Rect : ' + rect.x + ',' + rect.y + ',' + rect.w + ',' + rect.h);
+		console.log('limit : ' + keepWithin.x + ',' + keepWithin.y + ',' + keepWithin.w + ',' + keepWithin.h);
+	}
 	
 }());
