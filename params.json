@@ -1,0 +1,6 @@
+{
+  "name": "Selectincanvas.js",
+  "tagline": "Enables a drag able rectangle on a canvas.",
+  "body": "# selectInCanvas.js\r\nEnables a drag able rectangle on a canvas.\r\n\r\n[DEMO](https://cdn.rawgit.com/arccoder/selectincanvasjs/master/index.html)\r\n\r\n**Usage**\r\n\r\nTo draw a rectangle, left click on the canvas and drag. \r\nLeave the left click to complete drawing the rectangle.\r\n\r\nYou can use the squares on the rectangle to resize. \r\n\r\nLeft click any where in the rectangle to hold the rectangle and move around in the canvas, leave the left click to drop the rectangle to the desired location. \r\n\r\nYou can use the 'del' or 'esc' key to delete the rectangle.\r\n\r\nDouble click on the rectangle to display the its coordinates in an alert.\r\n\r\n**Applications**\r\n- Select a roi (region of interest).\r\n- Crop an image.\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
