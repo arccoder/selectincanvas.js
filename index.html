@@ -34,21 +34,8 @@
 <p>Enables a dragable rectangle on a canvas.</p>
 
 <p><strong>Demo</strong></p>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-<script src="https://cdn.rawgit.com/arccoder/selectincanvas.js/master/src/selectincanvas.js"></script>
 <canvas id="canvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
-
-<script>
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    // Invoke selectInCanvas.js
-    var sicJs = new SICjs('canvas', canvas, ctx, '#FF0000');
-    $("#canvas").dblclick(function(e) {
-        rect = sicJs.getRect();
-        alert(rect.x + ',' + rect.y + ',' + rect.w + ',' + rect.h);
-    });
-</script>
+<br>
 
 <p><strong>Usage</strong></p>
 
@@ -76,6 +63,17 @@ Leave the left click to complete drawing the rectangle.</p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/arccoder/selectincanvas.js/master/src/selectincanvas.js"></script>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        // Invoke selectInCanvas.js
+        var sicJs = new SICjs('canvas', canvas, ctx, '#FF0000');
+        $("#canvas").dblclick(function(e) {
+            rect = sicJs.getRect();
+            alert(rect.x + ',' + rect.y + ',' + rect.w + ',' + rect.h);
+        });
+    </script>
   </body>
 </html>
