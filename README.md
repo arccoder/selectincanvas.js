@@ -3,6 +3,8 @@ Enables a dragable rectangle on a canvas.
 
 [DEMO](https://cdn.rawgit.com/arccoder/selectincanvasjs/master/index.html)
 
+[Example - Image Crop](https://rawgit.com/arccoder/cropimage/master/index.html)
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="src/selectincanvas.js"></script>
 <canvas id="canvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
